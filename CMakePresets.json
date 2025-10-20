@@ -81,9 +81,13 @@
             "name": "GCC_analyze_vec",
             "displayName": "GCC 13.2.0 x86_64-linux-gnu Release -O3 -march=native vector info to file",
             "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
-            "binaryDir": "${sourceDir}/builds/build",
+            "binaryDir": "${sourceDir}/build/",
             "inherits": "gcc_base",
+            "generator": "MinGW Makefiles",
             "cacheVariables": {
+
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
                 "CMAKE_BUILD_TYPE": "Release",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_CXX_FLAGS": "-O3 -march=native -fopt-info-vec=vec_report.txt",
