@@ -7,10 +7,9 @@ public class Main {
 
     // 2. Статический блок для загрузки нашей C-библиотеки
     static {
-        // Имя 'arraysummer' должно соответствовать имени скомпилированной библиотеки
-        // System.loadLibrary("arraysummer"); // Для Linux/macOS
-        // В Windows это будет arraysummer.dll
-        System.load(new java.io.File("build/libJava_C_expansion.dll").getAbsolutePath()); // Укажите полный путь для простоты
+        // JVM сама найдет 'Java_C_expansion.dll' в той же папке,
+        // где лежат .class файлы, или в путях, указанных в java.library.path
+        System.loadLibrary("libJava_C_expansion");
     }
 
     public static void main(String[] args) {

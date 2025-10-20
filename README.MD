@@ -11,3 +11,11 @@ gcc -shared -I"$env:JAVA_HOME\include" -I"$env:JAVA_HOME\include\win32" Main.c -
 
 Запуск скомпилированный Java-класс, который загружает dll и вызывает C функцию
 java Main
+
+
+Можно билдить CMake и и всё это пробилдится им и есть таргет ран
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+cmake --build . --target run
+cd ..

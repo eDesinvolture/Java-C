@@ -162,7 +162,54 @@ if(ENABLE_COMPILER_REPORTS)
     endif()
 endif()
 
+
+
+
+find_package(Java COMPONENTS Development REQUIRED)
+find_package(JNI REQUIRED)
+
+
+
+# говно для команды
+# Указываем, куда класть .class файлы. Создадим папку 'classes' в директории сборки
+set(JAVA_CLASS_OUTPUT_DIR "${CMAKE_BINARY_DIR}/classes")
+
+# Указываем CMake, чтобы он клал нашу .dll В ТУ ЖЕ ПАПКУ, что и .class файлы.
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${JAVA_CLASS_OUTPUT_DIR})
+
+
+# Создаем кастомную команду для компиляции Java кода.
+# Она будет запускать javac и класть результат в JAVA_CLASS_OUTPUT_DIR
+# команда
+add_custom_command(
+    OUTPUT "${JAVA_CLASS_OUTPUT_DIR}/Main.class"
+    COMMAND "${Java_JAVAC_EXECUTABLE}"
+        -d "${JAVA_CLASS_OUTPUT_DIR}"
+        -encoding UTF-8
+        "${CMAKE_SOURCE_DIR}/src/Main.java"
+    DEPENDS "${CMAKE_SOURCE_DIR}/src/Main.java"
+    COMMENT "Компиляция Java исходников..."
+)
+# \ команда
+
+# Теперь, когда мы собираем 'compile_java', CMake сначала скомпилирует Java код.
+add_custom_target(compile_java ALL DEPENDS "${JAVA_CLASS_OUTPUT_DIR}/Main.class")
+
+add_custom_target(run
+    # Команда для запуска: java -cp <путь_к_классам> -Djava.library.path=<путь_к_dll> Main
+    COMMAND "${Java_JAVA_EXECUTABLE}" -cp "${JAVA_CLASS_OUTPUT_DIR}" -Djava.library.path="${CMAKE_BINARY_DIR}" Main
+    # Цель 'run' зависит от сборки C++ библиотеки и компиляции Java
+    DEPENDS Java_C_expansion
+    # Указываем рабочую директорию, чтобы все работало как надо
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
+
+
+
 add_library(Java_C_expansion SHARED ${SOURCES})
+
+add_dependencies(Java_C_expansion compile_java)
 
 # target_link_options(Java_C_expansion PRIVATE -Rpass=.*  -Rpass-analysis=.* -Rpass-missed=.*)
 
