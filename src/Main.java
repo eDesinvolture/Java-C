@@ -10,7 +10,7 @@ public class Main {
         // Имя 'arraysummer' должно соответствовать имени скомпилированной библиотеки
         // System.loadLibrary("arraysummer"); // Для Linux/macOS
         // В Windows это будет arraysummer.dll
-        System.load("C:\\Users\\adm\\Documents\\some things\\untitled\\src\\main.dll"); // Укажите полный путь для простоты
+        System.load(new java.io.File("build/libJava_C_expansion.dll").getAbsolutePath()); // Укажите полный путь для простоты
     }
 
     public static void main(String[] args) {

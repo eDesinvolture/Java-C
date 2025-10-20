@@ -1,0 +1,190 @@
+{
+    "version": 10,
+    "$comment": "An example CMakePresets.json file",
+    "configurePresets": [
+        {
+            "name": "gcc_base",
+            "displayName": "",
+            "description": "",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "GCC-small",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Small Bin",
+            "description": "Optimized for size",
+            "binaryDir": "${sourceDir}/builds/build-size",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-Os -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe",
+                "CMAKE_C_FLAGS": "-Os -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe",
+                "CMAKE_EXE_LINKER_FLAGS": "-Wl,--gc-sections -Wl,-s"
+            }
+        },
+        {
+            "name": "GCC-fast",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Fast Build",
+            "description": "Fast compilation (no debug info, no optimizations)",
+            "binaryDir": "${sourceDir}/builds/build-fast",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O0 -DNDEBUG -pipe -fno-exceptions ",
+                "CMAKE_C_FLAGS": "-O0 -DNDEBUG -pipe"
+            }
+        },
+        {
+            "name": "GCC Debug",
+            "displayName": "GCC Debug",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_C_FLAGS": " -Wall -Wextra",
+                "CMAKE_CXX_FLAGS": " -Wall -Wextra"
+            }
+        },
+        {
+            "name": "GCC 13.2.0 Release extra",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Release vector -flto -o3",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O3 -ftree-vectorizer-verbose=4 -fopt-info-vec -fopt-info-vec-missed -flto",
+                "CMAKE_C_FLAGS": "-O3 -ftree-vectorizer-verbose=4 -fopt-info-vec -fopt-info-vec-missed -flto"
+            }
+        },
+        {
+            "name": "GCC 13.2.0 RelWithDbInfo",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Release vector -flto -o3 DBINFO",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O3 -flto",
+                "CMAKE_C_FLAGS": "-O3 -flto"
+            }
+        },
+        {
+            "name": "GCC_analyze_vec",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Release -O3 -march=native vector info to file",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O3 -march=native -fopt-info-vec=vec_report.txt",
+                "CMAKE_C_FLAGS": "-O3 -march=native -fopt-info-vec=vec_report.txt"
+            }
+        },
+        {
+            "name": "clang_base",
+            "displayName": "",
+            "description": "",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/clang-18",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "clang-debug",
+            "displayName": "Clang debug",
+            "description": "Using compilers: C = /usr/bin/clang-18, CXX = /usr/bin/clang++-18",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "clang_base",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_FLAGS": " -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable",
+                "CMAKE_CXX_FLAGS": " -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable"
+            }
+        },
+        {
+            "name": "clang-18-Rel-Extra",
+            "displayName": "Clang-18 release flto",
+            "description": "Using compilers: C = /usr/bin/clang-18, CXX = /usr/bin/clang++-18 over gcc proj vector+inline no report",
+            "binaryDir": "${sourceDir}/builds/build/",
+            "inherits": "clang_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_C_FLAGS": "-O3 -march=native -fvectorize -flto=thin",
+                "CMAKE_CXX_FLAGS": "-O3 -march=native -fvectorize -flto=thin",
+                "GODOT_CPP_RELEASE_PATH": "${sourceDir}/builds/build_godot_cpp_release_clang_vec_flto"
+            }
+        },
+        {
+            "name": "clang-18-Rel-ExtraDBINFO",
+            "displayName": "Clang release + flto DBINFO",
+            "description": "Using compilers: C = /usr/bin/clang-18, CXX = /usr/bin/clang++-18 over gcc proj vector+inline no repor t DBINFO",
+            "binaryDir": "${sourceDir}/builds/build/",
+            "inherits": "clang_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_C_FLAGS": "-O3 -g -march=native -fvectorize -flto=thin",
+                "CMAKE_CXX_FLAGS": "-O3 -g -march=native -fvectorize -flto=thin",
+                "GODOT_CPP_RELEASE_PATH": "${sourceDir}/builds/build_godot_cpp_release_clang_vec_flto"
+            }
+        },
+        {
+            "name": "GCC 13.2.0 PGO anal",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Small Bin PGO",
+            "description": "Optimized for size, PGO anal enabled",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O3 -ftree-vectorize -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe -fprofile-generate -fprofile-arcs",
+                "CMAKE_C_FLAGS": "-O3 -ftree-vectorize -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe -fprofile-generate -fprofile-arcs",
+                "CMAKE_EXE_LINKER_FLAGS": "-Wl,--gc-sections -Wl,-s"
+            }
+        },
+        {
+            "name": "GCC 13.2.0 PGO usage",
+            "displayName": "GCC 13.2.0 x86_64-linux-gnu Small Bin PGO",
+            "description": "Optimized for size, PGO aware enabled",
+            "binaryDir": "${sourceDir}/builds/build",
+            "inherits": "gcc_base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-O3 -ftree-vectorize -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe -fprofile-use -fprofile-correction -flto",
+                "CMAKE_C_FLAGS": "-O3 -ftree-vectorize -DNDEBUG -ffunction-sections -fdata-sections -fvisibility=hidden -pipe -fprofile-use -fprofile-correction -flto",
+                "CMAKE_EXE_LINKER_FLAGS": "-Wl,--gc-sections -Wl,-s"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "clang-debug-override",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "clang-debug"
+        },
+        {
+            "name": "ooo",
+            "description": "",
+            "displayName": "",
+            "inherits": [
+                "clang-debug-override"
+            ]
+        }
+    ]
+}
