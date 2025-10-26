@@ -3,8 +3,8 @@ project(HeroGDExtension)
 
 
 
-set(CMAKE_C_COMPILER gcc)
-set(CMAKE_CXX_COMPILER gcc)
+#  set(CMAKE_C_COMPILER gcc)
+#  set(CMAKE_CXX_COMPILER gcc)
 # set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -88,13 +88,13 @@ set(REPORT_FLAGS -Rpass=.*)
 # message(STATUS "Applied flags to chunk.cpp: ${APPLIED_FLAGS}")
 
 
-# set(ENABLE_COMPILER_REPORTS true)
+set(ENABLE_COMPILER_REPORTS true)
 
 if(ENABLE_COMPILER_REPORTS)
     message(STATUS "[[Reports enabled]]")
     set(REPORT_SOURCES
         # src/blocks/chunk.cpp
-        src/render/chunk_render_opaque.cpp        #
+        src/Main.cpp        #
         # src/gdobj/sphere_generator.cpp
         # src/register_types.cpp
         # src/blocks/chunk.cpp
@@ -176,7 +176,7 @@ set(JAVA_CLASS_OUTPUT_DIR "${CMAKE_BINARY_DIR}/classes")
 
 # Указываем CMake, чтобы он клал нашу .dll В ТУ ЖЕ ПАПКУ, что и .class файлы.
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${JAVA_CLASS_OUTPUT_DIR})
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${JAVA_CLASS_OUTPUT_DIR})
 
 
 # Создаем кастомную команду для компиляции Java кода.
@@ -264,7 +264,7 @@ endif()
 if(WIN32)
     set_target_properties(Java_C_expansion PROPERTIES SUFFIX ".dll")
 else()
-    set_target_properties(Java_C_expansion PERTIES SUFFIX ".so")
+    set_target_properties(Java_C_expansion PROPERTIES SUFFIX ".so")
 endif()
 
 

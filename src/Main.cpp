@@ -1,5 +1,8 @@
 #include "Main.h" // Подключаем сгенерированный заголовок
 
+// чит версия для теста векторной версии без хвостиков
+// #define NUM_ELEMS 1024*1024
+
 // Реализация нативного метода
 extern "C" {
   JNIEXPORT jintArray JNICALL Java_Main_sumArrays
@@ -17,7 +20,20 @@ extern "C" {
     jint *resultBody = env->GetIntArrayElements(resultArray, 0);
 
     // 4. Выполняем сложение элементов
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < 
+      
+      // meta выбор рабзмера 
+      #ifndef NUM_ELEMS
+      len
+      #else
+      NUM_ELEMS
+      #endif
+
+
+
+      
+      
+      ; i++) {
       resultBody[i] = body1[i] + body2[i];
     }
 
